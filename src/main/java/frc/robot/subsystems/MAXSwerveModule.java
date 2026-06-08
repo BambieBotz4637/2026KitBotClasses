@@ -17,8 +17,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
+import frc.robot.Configs;
+
 public class MAXSwerveModule {
-    
   private final SparkMax m_drivingSpark;
   private final SparkMax m_turningSpark;
 
@@ -49,13 +50,13 @@ public class MAXSwerveModule {
 
     // Apply the respective configurations to the SPARKS. Reset parameters before
     // applying the configuration to bring the SPARK to a known good state. Persist
-    // Apply the respective configurations to the SPARKS. Reset parameters before
-    // applying the configuration to bring the SPARK to a known good state. Persist
     // the settings to the SPARK to avoid losing them on a power cycle.
-    // The project-level `Configs` class is not available here, so skip applying
-    // custom configurations to avoid the compilation error.
-    // TODO: Restore these configure calls with a proper configuration object when
-    // a Configs (or equivalent) class is added to the project.
+    m_drivingSpark.configure(Configs.MAXSwerveModule.drivingConfig, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+    m_turningSpark.configure(Configs.MAXSwerveModule.turningConfig, ResetMode.kResetSafeParameters,
+        PersistMode.kPersistParameters);
+
+    m_chassisAngularOffset = chassisAngularOffset;
     m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
     m_drivingEncoder.setPosition(0);
   }
