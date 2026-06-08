@@ -93,8 +93,15 @@ public class RobotContainer {
   // stick away from you (a negative value) drives the robot forwards (a positive
   // value)
 
-  fuelSubsystem.setDefaultCommand(new RunCommand(() -> fuelSubsystem.stop(), fuelSubsystem));
-}
+driveSubsystem.setDefaultCommand(
+    new RunCommand(
+        () -> driveSubsystem.drive(
+            -m_driverController.getRawAxis(1),
+            -m_driverController.getRawAxis(0),
+            -m_driverController.getRawAxis(4),
+            true),
+            driveSubsystem));
+      }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
