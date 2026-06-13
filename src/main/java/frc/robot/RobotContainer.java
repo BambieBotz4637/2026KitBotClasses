@@ -60,14 +60,15 @@ public class RobotContainer {
                 .withSize(2, 1);
 
         SmartDashboard.putData("Auto choices", m_chooser);
-        m_chooser.setDefaultOption("Do Nothing", "bleh");
+        m_chooser.setDefaultOption("Do Nothing", "nothing");
         // m_chooser.addOption("Sample Auto", "Sample Auto");
         m_chooser.addOption("BlueMidAuto", "BlueMidAuto");
-        m_chooser.addOption("Sample Auto", "Sample Auto");
+        m_chooser.addOption("RedMidAuto", "RedMidAuto");
 
-        SmartDashboard.putData("Auto choices", m_chooser);
 
-        /*
+        /* 
+        If you want to add more auto modes, add them here and in the switch statement in getAutonomousCommand() below. You can also remove the example autos if you don't need them. Just make sure to update the options in the chooser and the cases in the switch statement if you do.
+        Also Im being silly and just trying things out.
         NamedCommands.registerCommand("Drive Forward", new AutoDrive(drive, 0.5, 0.0));
         NamedCommands.registerCommand("Spin in Place", new AutoDrive(drive, 0.0, 0.5));
         NamedCommands.registerCommand("Drive Backwards", new AutoDrive(drive, -0.5, 0.0));
@@ -147,10 +148,10 @@ driveSubsystem.setDefaultCommand(
 
     switch (selectedAuto) {
       case "BlueMidAuto":
-      case "Sample Auto":
+      case "RedMidAuto":
         // Return the ExampleAuto (replace with specific autos if available)
         return new ExampleAuto(driveSubsystem, fuelSubsystem);
-      case "bleh":
+      case "nothing":
       default:
         // Do nothing
         return new InstantCommand();
