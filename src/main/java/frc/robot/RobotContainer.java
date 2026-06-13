@@ -22,6 +22,14 @@ import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.events.EventTrigger;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,7 +51,7 @@ public class RobotContainer {
    
 
   // The autonomous chooser
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -60,11 +68,10 @@ public class RobotContainer {
                 .withSize(2, 1);
 
         SmartDashboard.putData("Auto choices", m_chooser);
-        m_chooser.setDefaultOption("Do Nothing", "nothing");
+        m_chooser.setDefaultOption("Do Nothing", new InstantCommand());
         // m_chooser.addOption("Sample Auto", "Sample Auto");
-        m_chooser.addOption("BlueMidAuto", "BlueMidAuto");
-        m_chooser.addOption("RedMidAuto", "RedMidAuto");
-
+        m_chooser.addOption("BlueMidAuto", new PathPlannerAuto("BlueMidAuto"));
+        m_chooser.addOption("RedMidAuto", new PathPlannerAuto(("RedMidAuto")));
 
         /* 
         If you want to add more auto modes, add them here and in the switch statement in getAutonomousCommand() below. You can also remove the example autos if you don't need them. Just make sure to update the options in the chooser and the cases in the switch statement if you do.
@@ -143,9 +150,10 @@ driveSubsystem.setDefaultCommand(
    
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-   // return m_chooser.getSelected();
+    System.out.println("Selected Auto: " + m_chooser.getSelected());
+   return m_chooser.getSelected();
    
-  
+  /*
    String selectedAuto = m_chooser.getSelected();
 
     switch (selectedAuto) {
@@ -157,6 +165,7 @@ driveSubsystem.setDefaultCommand(
       default:
         // Do nothing
         return new InstantCommand();
+        */
       }
     }
-}
+
