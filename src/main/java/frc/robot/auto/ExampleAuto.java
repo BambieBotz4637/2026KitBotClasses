@@ -1,11 +1,13 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/**
-package frc.robot.commands;
+
+package frc.robot.auto;
+
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.commands.Launch;
 import frc.robot.subsystems.CANFuelSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -20,10 +22,10 @@ public class ExampleAuto extends SequentialCommandGroup {
     // Drive backwards for .25 seconds. The driveArcadeAuto command factory
     // intentionally creates a command which does not end which allows us to control
     // the timing using the withTimeout decorator
-    new AutoDrive(driveSubsystem,0.5,  0.0).withTimeout(.25),
+// new AutoDrive(driveSubsystem,0.5,  0.0).withTimeout(.25),
     // Spin up the launcher for 1 second and then launch balls for 9 seconds, for a
     // total of 10 seconds
     new Launch(ballSubsystem).withTimeout(10));
   }
 }
-*/
+  

@@ -72,6 +72,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+      }
+       public void driveArcade(double xSpeed, double zRotation) {
+    arcadeDrive(xSpeed, zRotation);
   }
 
   /**
@@ -181,5 +184,11 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public double getTurnRate() {
     return m_gyro.getRate(IMUAxis.kZ) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  public void arcadeDrive(double xSpeed, double zRotation) {
+    // Map arcade-style inputs to the swerve drive: forward xSpeed, zero lateral speed, rotation zRotation.
+    // Use drive(...) which handles conversion to module states.
+    drive(xSpeed, 0.0, zRotation, false);
   }
 }

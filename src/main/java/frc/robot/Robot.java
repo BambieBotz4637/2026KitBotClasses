@@ -77,7 +77,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    // RobotContainer.getAutonomousCommand() is not defined in the current RobotContainer;
+    // assign null to avoid the compile error. Implement getAutonomousCommand() in
+    // RobotContainer to return a Command if autonomous behavior is required.
+    m_autonomousCommand = null;
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

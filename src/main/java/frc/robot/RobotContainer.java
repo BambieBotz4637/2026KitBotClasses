@@ -5,7 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -13,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
+import frc.robot.auto.ExampleAuto;
 import frc.robot.commands.Eject;
-//import frc.robot.commands.ExampleAuto;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -40,7 +43,7 @@ public class RobotContainer {
    
 
   // The autonomous chooser
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,10 +51,37 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
 
+ 
+    // set up the shuffleboard tab
+        Shuffleboard.getTab("Autonomous")
+                .add("Auto Selector", m_chooser)
+                .withWidget(BuiltInWidgets.kComboBoxChooser)
+                .withPosition(0, 0)
+                .withSize(2, 1);
+
+        SmartDashboard.putData("Auto choices", m_chooser);
+        m_chooser.setDefaultOption("Do Nothing", "bleh");
+        // m_chooser.addOption("Sample Auto", "Sample Auto");
+        m_chooser.addOption("BlueMidAuto", "BlueMidAuto");
+        m_chooser.addOption("Sample Auto", "Sample Auto");
+
+        SmartDashboard.putData("Auto choices", m_chooser);
+
+        /*
+        NamedCommands.registerCommand("Drive Forward", new AutoDrive(drive, 0.5, 0.0));
+        NamedCommands.registerCommand("Spin in Place", new AutoDrive(drive, 0.0, 0.5));
+        NamedCommands.registerCommand("Drive Backwards", new AutoDrive(drive, -0.5, 0.0));
+        NamedCommands.registerCommand("Drive Forward and Spin", new AutoDrive(drive, 0.5, 0.5));
+        NamedCommands.registerCommand("Drive Backwards and Spin", new AutoDrive(drive, -0.5, 0.5));
+        NamedCommands.registerCommand("Sample Auto", new ExampleAuto(driveSubsystem, fuelSubsystem));
+        NamedCommands.registerCommand("BlueMidAuto", new BlueMidAuto(driveSubsystem, fuelSubsystem));
+        */
+
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
    // autoChooser.setDefaultOption("Autonomous", new ExampleAuto(driveSubsystem, fuelSubsystem));
+
   }
 
   /**
@@ -101,15 +131,29 @@ driveSubsystem.setDefaultCommand(
             -m_driverController.getRawAxis(4),
             true),
             driveSubsystem));
-      }
-
-  /**
+  
+   // fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));          
+  }
+   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   */
+   * */
+   
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.getSelected();
-  }
+   // return m_chooser.getSelected();
+    String selectedAuto = m_chooser.getSelected();
+
+    switch (selectedAuto) {
+      case "BlueMidAuto":
+      case "Sample Auto":
+        // Return the ExampleAuto (replace with specific autos if available)
+        return new ExampleAuto(driveSubsystem, fuelSubsystem);
+      case "bleh":
+      default:
+        // Do nothing
+        return new InstantCommand();
+      }
+    }
 }
