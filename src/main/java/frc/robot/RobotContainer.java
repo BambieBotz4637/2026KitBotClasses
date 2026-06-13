@@ -144,7 +144,9 @@ driveSubsystem.setDefaultCommand(
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
    // return m_chooser.getSelected();
-    String selectedAuto = m_chooser.getSelected();
+   
+  
+   String selectedAuto = m_chooser.getSelected();
 
     switch (selectedAuto) {
       case "BlueMidAuto":
