@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueHub-Depot"
+            "pathName": "BlueRight-OutPost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BlueDepot-Hub"
+            "pathName": "BlueOutPost-Right to Hub"
           }
         }
       ]

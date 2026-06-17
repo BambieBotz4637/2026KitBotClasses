@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueHub-Depot"
+            "pathName": "RightLeft-OutPost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BlueDepot-Hub"
+            "pathName": "RedOutpost-Hub"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Blue Side",
+  "folder": "Red Side",
   "choreoAuto": false
 }
