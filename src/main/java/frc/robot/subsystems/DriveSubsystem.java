@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
+/*
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+*/
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -21,16 +23,17 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.ADIS16470_IMU.IMUAxis;
-import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.DriverStation;
+//import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.config.PIDConstants;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
+//import com.pathplanner.lib.auto.AutoBuilder;
+//import com.pathplanner.lib.config.RobotConfig;
+//import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+//import com.pathplanner.lib.config.PIDConstants;
+//import edu.wpi.first.math.kinematics.ChassisSpeeds;
+//import edu.wpi.first.wpilibj.DriverStation;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -73,7 +76,21 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+
+// Test if this Crash the Drive Station
       // Load robot config from PathPlanner GUI settings
+      /*
+      RobotConfig config;
+      try {
+    System.out.println("Loading PathPlanner RobotConfig...");
+    config = RobotConfig.fromGUISettings();
+    System.out.println("RobotConfig loaded successfully.");
+} catch (Exception e) {
+    System.out.println("FAILED TO LOAD ROBOTCONFIG!");
+    e.printStackTrace();
+    return;
+}
+   /*
     RobotConfig config;
     try {
         config = RobotConfig.fromGUISettings();
@@ -81,29 +98,31 @@ public class DriveSubsystem extends SubsystemBase {
         e.printStackTrace();
         return;
     }
-
-    // Configure AutoBuilder for PathPlanner
+        */
+// Configure AutoBuilder for PathPlanner
+    // Declare RobotConfig so it is defined for the configure call; replace null with RobotConfig.fromGUISettings() if you want to load GUI settings.
+    /* 
+    RobotConfig config = null;
     AutoBuilder.configure(
         this::getPose,
         this::resetOdometry,
-        this::getRobotRelativeSpeeds,   // need to add this method
-        (speeds, feedforwards) -> driveRobotRelative(speeds), // need to add this method
-        new PPHolonomicDriveController(
-            new PIDConstants(5.0, 0.0, 0.0), // translation PID
-            new PIDConstants(5.0, 0.0, 0.0)  // rotation PID
-        ),
-        config,
-        () -> {
-            // Flip path for red alliance
-            var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-            }
-            return false;
-        },
-        this
+        this::getRobotRelativeSpeeds,
+        this::driveRobotRelative,
+    new PPHolonomicDriveController(
+        new PIDConstants(5.0, 0.0, 0.0),
+        new PIDConstants(5.0, 0.0, 0.0)
+    ),
+    config,
+    () -> DriverStation.getAlliance()
+            .map(alliance -> alliance == Alliance.Red)
+            .orElse(false),
+    this
     );
+    */
 }
+
+//Testing the things above
+
 // Returns current robot-relative speeds — PathPlanner needs this for feedback
 public ChassisSpeeds getRobotRelativeSpeeds() {
     return DriveConstants.kDriveKinematics.toChassisSpeeds(

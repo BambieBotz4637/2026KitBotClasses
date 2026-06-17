@@ -16,12 +16,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
-import frc.robot.auto.ExampleAuto;
+//import frc.robot.auto.ExampleAuto;
 import frc.robot.commands.Eject;
+import frc.robot.commands.Intake;
 import frc.robot.commands.LaunchSequence;
 import frc.robot.subsystems.CANFuelSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
+/*
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -30,6 +32,7 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
+*/
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -59,8 +62,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureBindings();
 
- 
-    // set up the shuffleboard tab
+ /*
+    // set up the shuffleboard tab & Check this for auto code.
         Shuffleboard.getTab("Autonomous")
                 .add("Auto Selector", m_chooser)
                 .withWidget(BuiltInWidgets.kComboBoxChooser)
@@ -71,56 +74,6 @@ public class RobotContainer {
         m_chooser.setDefaultOption("Do Nothing", new InstantCommand());
         // m_chooser.addOption("Sample Auto", "Sample Auto");
 
-        // Blue Alliance Autos. This is when we are Station at the Hub
-        m_chooser.addOption("BlueMidAuto", new PathPlannerAuto("BlueMidAuto"));
-        m_chooser.addOption("BlueHubDepotAuto", new PathPlannerAuto("BlueHubDepotAuto"));
-        m_chooser.addOption("BlueHubNetLAuto", new PathPlannerAuto("BlueHubNetLAuto"));
-        m_chooser.addOption("BlueHubNetRAuto", new PathPlannerAuto("BlueHubNetRAuto"));
-
-        // Red Alliance Autos. This is when we are Station at the Hub
-        m_chooser.addOption("RedMidAuto", new PathPlannerAuto("RedMidAuto"));
-        m_chooser.addOption("RedHubNetLAuto", new PathPlannerAuto("RedHubNetLAuto"));
-        m_chooser.addOption("RedHubDepotAuto", new PathPlannerAuto("RedHubDepotAuto"));
-        m_chooser.addOption("RedHubNetRAuto", new PathPlannerAuto("RedHubNetRAuto"));
-
-        //Blue Alliance Autos. This is when we are Station at the Right Trench (Go to PathPlanner and Make it)
-        /*
-          m_chooser.addOption("BlueTrenchRightAuto", new PathPlannerAuto("BlueTrenchRightAuto"));
-          m_chooser.addOption("BlueTrenchRightNetLAuto", new PathPlannerAuto("BlueTrenchRightNetLAuto"));
-          m_chooser.addOption("BlueTrenchRightNetRAuto", new PathPlannerAuto("BlueTrenchRightNetRAuto"));
-          m_chooser.addOption("BlueTrenchRightDepotAuto", new PathPlannerAuto("BlueTrenchRightDepotAuto"));
-          */ 
-
-        // Red Alliance Autos. This is when we are Station at the Right Trench (Go to PathPlanner and Make it)
-        /* 
-          m_chooser.addOption("RedTrenchRightAuto", new PathPlannerAuto("RedTrenchRightAuto"));
-          m_chooser.addOption("RedTrenchRightNetLAuto", new PathPlannerAuto("RedTrenchRightNetLAuto"));
-          m_chooser.addOption("RedTrenchRightNetRAuto", new PathPlannerAuto("RedTrenchRightNetRAuto"));
-          m_chooser.addOption("RedTrenchRightDepotAuto", new PathPlannerAuto("RedTrenchRightDepotAuto"));
-          */
-
-        //Blue Alliance Autos. This is when we are Station at the Left Trench. (Go to PathPlanner and Make it)
-        /*
-          m_chooser.addOption("BlueTrenchLeftAuto", new PathPlannerAuto("BlueTrenchLeftAuto"));
-          m_chooser.addOption("BlueTrenchLeftNetLAuto", new PathPlannerAuto("BlueTrenchLeftNetLAuto"));
-          m_chooser.addOption("BlueTrenchLeftNetRAuto", new PathPlannerAuto("BlueTrenchLeftNetRAuto"));
-          m_chooser.addOption("BlueTrenchLeftDepotAuto", new PathPlannerAuto("BlueTrenchLeftDepotAuto"));
-          */
-
-        // Red Alliance Autos. This is when we are Station at the Left Trench (Go to PathPlanner and Make it)
-        /*
-          m_chooser.addOption("RedTrenchLeftAuto", new PathPlannerAuto("RedTrenchLeftAuto"));
-          m_chooser.addOption("RedTrenchLeftNetLAuto", new PathPlannerAuto("RedTrenchLeftNetLAuto"));
-          m_chooser.addOption("RedTrenchLeftNetRAuto", new PathPlannerAuto("RedTrenchLeftNetRAuto"));
-          m_chooser.addOption("RedTrenchLeftDepotAuto", new PathPlannerAuto("RedTrenchLeftDepotAuto"));
-          */
-
-        /* 
-        * If you want to add more auto modes, add them here and in the switch statement in getAutonomousCommand() below.
-        * You can also remove the example autos if you don't need them.
-        * Just make sure to update the options in the chooser and the cases in the switch statement if you do.
-        * Also Im being silly and just trying things out.
-        */ 
         /*
         NamedCommands.registerCommand("Drive Forward", new AutoDrive(drive, 0.5, 0.0));
         NamedCommands.registerCommand("Spin in Place", new AutoDrive(drive, 0.0, 0.5));
@@ -161,15 +114,33 @@ public class RobotContainer {
             () -> driveSubsystem.zeroHeading(),
             driveSubsystem));
 
-  // While the left bumper on operator controller is held, intake Fuel
-  m_operatorController.leftBumper().whileTrue(new RunCommand(
-        () -> fuelSubsystem.setIntakeLauncherRoller(0.5), fuelSubsystem));
-             // While the right bumper on the operator controller is held, spin up for 1
-  // second, then launch fuel. When the button is released, stop.
-  m_operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
-  // While the A button is held on the operator controller, eject fuel back out
-  // the intake
-  m_operatorController.a().whileTrue(new Eject(fuelSubsystem));
+  
+    // While the left bumper on operator controller is held, intake Fuel
+    m_operatorController.leftBumper().whileTrue(new Intake(fuelSubsystem));
+   /*
+    m_operatorController.leftBumper().whileFalse(new InstantCommand(
+      () -> fuelSubsystem.stop(),
+      fuelSubsystem));
+      */
+
+    // While the right bumper on the operator controller is held, spin up for 1
+    // second, then launch fuel. When the button is released, stop.
+    m_operatorController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+    /*
+    m_operatorController.rightBumper().whileFalse(new InstantCommand(
+      () -> fuelSubsystem.stop(),
+      fuelSubsystem));
+      */
+
+    // While the A button is held on the operator controller, eject fuel back out
+    // the intake
+    m_operatorController.y().whileTrue(new Eject(fuelSubsystem));
+   /* 
+    m_operatorController.y().whileFalse(new InstantCommand(
+      () -> fuelSubsystem.stop(),
+      fuelSubsystem)); 
+      */
+
 
   // Set the default command for the drive subsystem to the command provided by
   // factory with the values provided by the joystick axes on the driver
@@ -196,7 +167,7 @@ driveSubsystem.setDefaultCommand(
    
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    System.out.println("Selected Auto: " + m_chooser.getSelected());
+   // System.out.println("Selected Auto: " + m_chooser.getSelected());
    return m_chooser.getSelected();
    
   /*
