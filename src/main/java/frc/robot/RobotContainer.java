@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OIConstants;
+import frc.robot.auto.AutoDrive;
 //import frc.robot.auto.ExampleAuto;
 import frc.robot.commands.Eject;
 import frc.robot.commands.Intake;
@@ -61,35 +64,17 @@ public class RobotContainer {
    */
   public RobotContainer() {
     configureBindings();
+      // Add commands to the autonomous command chooser
+    m_chooser.setDefaultOption("Auto Drive", new AutoDrive(driveSubsystem));
+    m_chooser.addOption("Launch Auto", new LaunchSequence(fuelSubsystem));
+    Shuffleboard.getTab("Autonomous").add(m_chooser).withWidget(BuiltInWidgets.kComboBoxChooser);
 
- /*
-    // set up the shuffleboard tab & Check this for auto code.
-        Shuffleboard.getTab("Autonomous")
-                .add("Auto Selector", m_chooser)
-                .withWidget(BuiltInWidgets.kComboBoxChooser)
-                .withPosition(0, 0)
-                .withSize(2, 1);
-
-        SmartDashboard.putData("Auto choices", m_chooser);
-        m_chooser.setDefaultOption("Do Nothing", new InstantCommand());
-        // m_chooser.addOption("Sample Auto", "Sample Auto");
-
-        /*
-        NamedCommands.registerCommand("Drive Forward", new AutoDrive(drive, 0.5, 0.0));
-        NamedCommands.registerCommand("Spin in Place", new AutoDrive(drive, 0.0, 0.5));
-        NamedCommands.registerCommand("Drive Backwards", new AutoDrive(drive, -0.5, 0.0));
-        NamedCommands.registerCommand("Drive Forward and Spin", new AutoDrive(drive, 0.5, 0.5));
-        NamedCommands.registerCommand("Drive Backwards and Spin", new AutoDrive(drive, -0.5, 0.5));
-        NamedCommands.registerCommand("Sample Auto", new ExampleAuto(driveSubsystem, fuelSubsystem));
-        NamedCommands.registerCommand("BlueMidAuto", new BlueMidAuto(driveSubsystem, fuelSubsystem));
-        */
-
-    // Set the options to show up in the Dashboard for selecting auto modes. If you
-    // add additional auto modes you can add additional lines here with
-    // autoChooser.addOption
-   // autoChooser.setDefaultOption("Autonomous", new ExampleAuto(driveSubsystem, fuelSubsystem));
-
+    NamedCommands.registerCommand("Intake",new Intake(fuelSubsystem));
+    NamedCommands.registerCommand("Launch",new LaunchSequence(fuelSubsystem));
+    NamedCommands.registerCommand("Eject",new Eject(fuelSubsystem));
   }
+
+  
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -169,20 +154,6 @@ driveSubsystem.setDefaultCommand(
     // An example command will be run in autonomous
    // System.out.println("Selected Auto: " + m_chooser.getSelected());
    return m_chooser.getSelected();
-   
-  /*
-   String selectedAuto = m_chooser.getSelected();
-
-    switch (selectedAuto) {
-      case "BlueMidAuto":
-      case "RedMidAuto":
-        // Return the ExampleAuto (replace with specific autos if available)
-        return new ExampleAuto(driveSubsystem, fuelSubsystem);
-      case "nothing":
-      default:
-        // Do nothing
-        return new InstantCommand();
-        */
       }
     }
 

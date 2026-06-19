@@ -4,12 +4,10 @@
 
 package frc.robot.subsystems;
 
-/* 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-*/
 
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
@@ -69,49 +67,32 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+      // initialize modules, gyro, odometry, etc.
 
-// Test if this Crash the Drive Station
-      // Load robot config from PathPlanner GUI settings
-      /*
-      RobotConfig config;
-      try {
-    System.out.println("Loading PathPlanner RobotConfig...");
-    config = RobotConfig.fromGUISettings();
-    System.out.println("RobotConfig loaded successfully.");
-} catch (Exception e) {
-    System.out.println("FAILED TO LOAD ROBOTCONFIG!");
-    e.printStackTrace();
-    return;
-}
-   /*
     RobotConfig config;
     try {
-        config = RobotConfig.fromGUISettings();
+      config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
-        e.printStackTrace();
-        return;
+      // Log the problem to the driver station and continue with a safe fallback.
+      DriverStation.reportWarning("Failed to load RobotConfig from GUI settings: " + e.getMessage(), true);
+      config = null;
     }
-        */
-// Configure AutoBuilder for PathPlanner
-    // Declare RobotConfig so it is defined for the configure call; replace null with RobotConfig.fromGUISettings() if you want to load GUI settings.
-    /* 
-    RobotConfig config = null;
+
     AutoBuilder.configure(
         this::getPose,
         this::resetOdometry,
         this::getRobotRelativeSpeeds,
-        this::driveRobotRelative,
-    new PPHolonomicDriveController(
-        new PIDConstants(5.0, 0.0, 0.0),
-        new PIDConstants(5.0, 0.0, 0.0)
-    ),
-    config,
-    () -> DriverStation.getAlliance()
-            .map(alliance -> alliance == Alliance.Red)
+        (speeds, feedforwards) -> driveRobotRelative(speeds),
+        new PPHolonomicDriveController(
+            new PIDConstants(5.0, 0.0, 0.0),
+            new PIDConstants(5.0, 0.0, 0.0)
+        ),
+        config,
+        () -> DriverStation.getAlliance()
+            .map(alliance -> alliance == DriverStation.Alliance.Red)
             .orElse(false),
-    this
+        this
     );
-    */
 }
 
 //Testing the things above

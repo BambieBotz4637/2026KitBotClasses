@@ -11,9 +11,33 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "BlueDepot-Hub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
           }
         }
       ]
